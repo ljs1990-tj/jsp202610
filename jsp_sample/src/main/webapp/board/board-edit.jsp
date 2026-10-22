@@ -33,7 +33,7 @@
 			내용 : <textarea name="contents" cols="20" rows="5"><%= rs.getString("CONTENTS") %></textarea>
 		</div>
 		<div>
-			<input type="button" value="글쓰기" onclick="fnAdd()">
+			<input type="button" value="수정" onclick="fnAdd()">
 		</div>
 	</form>
 	<%

@@ -12,17 +12,22 @@
 		String title = request.getParameter("title");
 		String contents = request.getParameter("contents");
 		String kind = request.getParameter("kind");
+		String sessionId = (String) session.getAttribute("sessionId");
 		
-		String query = "INSERT INTO TBL_BOARDa VALUES("
+		String query = "INSERT INTO TBL_BOARD VALUES("
 					+ "BOARD_SEQ.NEXTVAL, "
 					+ "'" + title + "', "
 					+ "'" + contents + "', "
-					+ "'user01', "
+					+ "'" + sessionId + "', "
 					+ "0, "
 					+ kind + ", "
 					+ "SYSDATE, SYSDATE )";
 		
-		System.out.println(query);
+		String query2 = String.format(
+			"INSERT INTO TBL_BOARD VALUES(BOARD_SEQ.NEXTVAL, '%s', '%s', '%s', 0, %s, SYSDATE, SYSDATE)",
+			title, contents, sessionId, kind
+		);
+		System.out.println(query2);
 		int result = stmt.executeUpdate(query);
 		if(result > 0){
 			out.println("게시글이 등록되었습니다!");
