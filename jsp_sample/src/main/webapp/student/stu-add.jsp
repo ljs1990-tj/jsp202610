@@ -53,11 +53,11 @@
 				<td><input name="stuId"></td>
 				<th>학년</th>
 				<td>
-					<select>
-						<option>1학년</option>
-						<option>2학년</option>
-						<option>3학년</option>
-						<option>4학년</option>
+					<select name="grade">
+						<option value="1">1학년</option>
+						<option value="2">2학년</option>
+						<option value="3">3학년</option>
+						<option value="4">4학년</option>
 					</select>
 				</td>
 			</tr>

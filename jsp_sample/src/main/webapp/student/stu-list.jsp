@@ -36,7 +36,9 @@
 	%>
 		<tr>
 			<td><%= rs.getString("STUNO") %></td>
-			<td><%= rs.getString("NAME") %></td>
+			<td>
+				<a href="stu-view.jsp?stuNo=<%= rs.getString("STUNO") %>"><%= rs.getString("NAME") %></a>
+			</td>
 			<td><%= rs.getString("ID") %></td>
 			<td><%= rs.getString("GRADE") %></td>
 			<td><%= rs.getString("DNAME") %></td>
