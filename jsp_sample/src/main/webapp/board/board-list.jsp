@@ -31,6 +31,7 @@
 			<th>제목</th>
 			<th>작성자</th>
 			<th>조회수</th>
+			<th>삭제</th>
 		</tr>
 	<%	
 		while(rs.next()){
@@ -43,6 +44,7 @@
 			</td>
 			<td><%= rs.getString("USERID") %></td>
 			<td><%= rs.getString("CNT") %></td>
+			<td><button>삭제</button></td>
 		</tr>
 	<%				
 		}

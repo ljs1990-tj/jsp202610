@@ -30,10 +30,21 @@
 	<%		
 		}
 	%>
-	
+	<div>
+		<input type="button" value="수정">
+		<input type="button" value="삭제" onclick="fnRemove()">
+	</div>
 	
 </body>
 </html>
-
+<script>
+	function fnRemove(){
+		if(!confirm("정말 삭제??")){
+			return;
+		}
+		location.href = "board-remove-result.jsp?boardNo="+<%= boardNo %>;
+		
+	}
+</script>
 
 
