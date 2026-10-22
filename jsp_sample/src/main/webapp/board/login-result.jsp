@@ -22,6 +22,12 @@
 			
 			if(rs.getString("PWD").equals(pwd)){
 				// 비밀번호 통과
+				
+				session.setAttribute("sessionId", rs.getString("USERID"));
+				session.setAttribute("sessionName", rs.getString("NAME"));
+				session.setAttribute("sessionRole", rs.getString("STATUS"));
+				session.setMaxInactiveInterval(60 * 30); // 30분
+				
 				response.sendRedirect("board-list.jsp");				
 			} else {
 				out.println("비밀번호를 확인해주세요");

@@ -16,6 +16,8 @@
 </head>
 <body>
 	<%@ include file="../db.jsp" %>
+	<h4><%= session.getAttribute("sessionName") %> 님이 접속중 입니다.</h4>
+	<hr>
 	<h2>게시글 목록</h2>
 	<hr>
 	
@@ -44,7 +46,7 @@
 			</td>
 			<td><%= rs.getString("USERID") %></td>
 			<td><%= rs.getString("CNT") %></td>
-			<td><button>삭제</button></td>
+			<td><button onclick="fnRemove(<%= rs.getString("BOARDNO") %>)">삭제</button></td>
 		</tr>
 	<%				
 		}
@@ -59,6 +61,13 @@
 <script>
 	function fnView(boardNo){
 		location.href = "board-view.jsp?boardNo="+boardNo;
+	}
+	
+	function fnRemove(boardNo){
+		if(!confirm("정말 삭제??")){
+			return;
+		}
+		location.href = "board-remove-result.jsp?boardNo="+boardNo;
 	}
 </script>
 

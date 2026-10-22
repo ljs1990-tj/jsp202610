@@ -31,7 +31,7 @@
 		}
 	%>
 	<div>
-		<input type="button" value="수정">
+		<input type="button" value="수정" onclick="fnEdit()">
 		<input type="button" value="삭제" onclick="fnRemove()">
 	</div>
 	
@@ -43,6 +43,12 @@
 			return;
 		}
 		location.href = "board-remove-result.jsp?boardNo="+<%= boardNo %>;
+		
+	}
+	
+	function fnEdit(){
+		
+		location.href = "board-edit.jsp?boardNo="+<%= boardNo %>;
 		
 	}
 </script>
