@@ -32,6 +32,10 @@
 	String size = request.getParameter("size");
 	String selectSize = size != null ? size : "";
 	
+	String order = 
+			request.getParameter("order") != null ? 
+						request.getParameter("order") : "dname";
+	
 	/* 페이징에 사용할 변수 */
 	int pageSize = 5; // 한 페이지에 보여줄 개수
 	int currentPage = 1; // 현재 위치한 페이지
@@ -62,14 +66,19 @@
 		cntQuery += "AND GRADE = " + grade + " ";
 		// System.out.println(query);
 	}
-	query += "OFFSET " + offset + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
+	String orderQuery = 
+				order.equals("dname") || order == null ?
+						"ORDER BY DNAME ASC" : order.equals("stuNo") ?
+						"ORDER BY STUNO ASC" : "ORDER BY NAME ASC";
+	query += orderQuery;
+	query += " OFFSET " + offset + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
 	
 	// 페이징 쿼리
 	ResultSet cntRS = stmt.executeQuery(cntQuery);
 	cntRS.next();
 	int total = cntRS.getInt("TOTAL");
 	int pageList = (int) Math.ceil((double) total / pageSize);
-	
+	System.out.println(query);
 	ResultSet rs = stmt.executeQuery(query);
 	
 	int gradeList[] = {1,2,3,4};
@@ -101,7 +110,12 @@
 				}
 			%>
 			</select>
+			|
+			<label><input name="order" type="radio" value="stuName" <%= order.equals("stuName") ? "checked" : "" %> onclick="fnSearch()"> 이름순</label>
+			<label><input name="order" type="radio" value="stuNo" <%= order.equals("stuNo") ? "checked" : "" %> onclick="fnSearch()"> 학번순</label>
+			<label><input name="order" type="radio" value="dname" <%= order.equals("dname") ? "checked" : "" %> onclick="fnSearch()"> 학과순</label>
 		</div>
+		<hr>
 		<table>
 			<tr>
 				<th>학번</th>
@@ -128,7 +142,7 @@
 		
 		</table>
 		<div class="page">
-			<a href="javascript:;">◀</a>
+			<a href="javascript:;" onclick="fnMove('prev')" <%= currentPage == 1 ? "hidden" : "" %>>◀</a>
 			<%
 				for(int i=1; i<=pageList; i++){
 					if(currentPage == i){
@@ -144,7 +158,7 @@
 					}	
 				}
 			%>
-			<a href="javascript:;">▶</a>
+			<a href="javascript:;" onclick="fnMove('next')" <%= currentPage == pageList ? "hidden" : "" %>>▶</a>
 		</div>
 		<div>
 			<a href="stu-add.jsp"><button>학생추가</button></a>
@@ -176,6 +190,11 @@
 	function fnPage(page){
 		let form = document.form;
 		form.page.value = page;
+		form.submit();
+	}
+	function fnMove(v){
+		let form = document.form;
+		form.page.value = v == "prev" ? <%= currentPage - 1 %> : <%= currentPage + 1 %>;
 		form.submit();
 	}
 	
