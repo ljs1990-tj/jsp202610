@@ -31,6 +31,9 @@
 	.btn {
 		margin : 10px 3px;
 	}
+	input[readonly] {
+		background-color: #eee;
+	}
 </style>
 </head>
 <body>
