@@ -78,6 +78,18 @@
 		   </select>
 		</div>
 		<hr> 
+		<div>
+			<select name="size" onchange="fnSize()">
+			<%
+				int pageArr[] = {5, 10, 20, 50};
+				for(int i=0; i<pageArr.length; i++){
+			%>
+					<option value="<%= pageArr[i] %>"><%= pageArr[i] %>개씩</option>
+			<%		
+				}
+			%>
+			</select>
+		</div>
 		<table>
 			<tr>
 				<th>학번</th>
@@ -132,6 +144,10 @@
 	}
 	
 	function fnGrade(){
+		let form = document.form;
+		form.submit();
+	}
+	function fnSize(){
 		let form = document.form;
 		form.submit();
 	}
