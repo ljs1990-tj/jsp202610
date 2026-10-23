@@ -29,6 +29,9 @@
 	String grade = request.getParameter("grade");
 	String selectGrade = grade != null ? grade : "";
 	
+	String size = request.getParameter("size");
+	String selectSize = size != null ? size : "";
+	
 	/* 페이징에 사용할 변수 */
 	int pageSize = 5; // 한 페이지에 보여줄 개수
 	int currentPage = 1; // 현재 위치한 페이지
@@ -36,13 +39,13 @@
 	if(request.getParameter("page") != null){
 		currentPage = Integer.parseInt(request.getParameter("page"));
 	}
+	if(request.getParameter("size") != null && request.getParameter("size") != ""){
+		pageSize = Integer.parseInt(request.getParameter("size"));
+	}
 	int offset = (currentPage - 1) * pageSize;
 	
-	String cntQuery = "SELECT COUNT(*) AS TOTAL FROM STU";
-	ResultSet cntRS = stmt.executeQuery(cntQuery);
-	cntRS.next();
-	int total = cntRS.getInt("TOTAL");
-	int pageList = (int) Math.ceil((double) total / pageSize);
+	String cntQuery = "SELECT COUNT(*) AS TOTAL FROM STU WHERE 1=1 ";
+	
 	/* --------------- */
 	
 	/* System.out.println(keyword); */
@@ -52,12 +55,21 @@
           			"WHERE 1=1 ";
 	if(keyword != null){
 		query += "AND NAME LIKE '%" + keyword + "%' ";
+		cntQuery += "AND NAME LIKE '%" + keyword + "%' ";
 	}
 	if(grade != null && !grade.equals("")){
 		query += "AND GRADE = " + grade + " ";
+		cntQuery += "AND GRADE = " + grade + " ";
 		// System.out.println(query);
 	}
 	query += "OFFSET " + offset + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
+	
+	// 페이징 쿼리
+	ResultSet cntRS = stmt.executeQuery(cntQuery);
+	cntRS.next();
+	int total = cntRS.getInt("TOTAL");
+	int pageList = (int) Math.ceil((double) total / pageSize);
+	
 	ResultSet rs = stmt.executeQuery(query);
 	
 	int gradeList[] = {1,2,3,4};
@@ -65,7 +77,7 @@
 	<form name="form" action="stu-list.jsp">
 		<div>
 			검색어 : <input name="keyword" value="<%= keyword != null ? keyword : "" %>">
-				   <button onclick="fnSearch()">검색</button>
+				   <input type="button" value="검색" onclick="fnSearch()">
 		   <select name="grade" onchange="fnGrade()">
 		  	 <option value=""> :: 전체 :: </option>
 		   <%
@@ -84,7 +96,7 @@
 				int pageArr[] = {5, 10, 20, 50};
 				for(int i=0; i<pageArr.length; i++){
 			%>
-					<option value="<%= pageArr[i] %>"><%= pageArr[i] %>개씩</option>
+					<option value="<%= pageArr[i] %>" <%= selectSize.equals(Integer.toString(pageArr[i])) ? "selected" : "" %>><%= pageArr[i] %>개씩</option>
 			<%		
 				}
 			%>
@@ -116,39 +128,54 @@
 		
 		</table>
 		<div class="page">
+			<a href="javascript:;">◀</a>
 			<%
 				for(int i=1; i<=pageList; i++){
 					if(currentPage == i){
 			%>
-						<a href="?page=<%= i %>" class="active"><%= i %></a>
+						<%-- <a href="?page=<%= i %>&size=<%= selectSize %>" class="active"><%= i %></a> --%>
+						<a href="javascript:;" onclick="fnPage(<%= i %>)" class="active"><%= i %></a>
 			<%			
 					} else {
 			%>
-						<a href="?page=<%= i %>"><%= i %></a>
+						<%-- <a href="?page=<%= i %>&size=<%= selectSize %>"><%= i %></a> --%>
+						<a href="javascript:;" onclick="fnPage(<%= i %>)"><%= i %></a>
 			<%			
 					}	
 				}
 			%>
+			<a href="javascript:;">▶</a>
 		</div>
 		<div>
 			<a href="stu-add.jsp"><button>학생추가</button></a>
 		</div>
+		<input name="page" value="<%= currentPage %>" hidden>
 	</form>
 </body>
 </html>
 <script>
+	// fnSearch, fnGrade, fnSize 는 결국 같은 내용이므로 하나로 합쳐도 된다.
 	function fnSearch(){
 		let form = document.form;
-		location.href = "?keyword="+form.keyword.value;
+		form.page.value = 1;
+		form.submit();
+		
+		/* location.href = "?keyword="+form.keyword.value; */
 		// location.href = "stu-list.jsp?keyword="+form.keyword.value;
 	}
-	
 	function fnGrade(){
 		let form = document.form;
+		form.page.value = 1;
 		form.submit();
 	}
 	function fnSize(){
 		let form = document.form;
+		form.page.value = 1;
+		form.submit();
+	}
+	function fnPage(page){
+		let form = document.form;
+		form.page.value = page;
 		form.submit();
 	}
 	
