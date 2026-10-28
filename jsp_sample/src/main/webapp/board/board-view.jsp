@@ -64,9 +64,16 @@
 			out.println("<br>");
 		}
 	%>
+	<hr>
+	<form action="comment-add-result.jsp">
+		<input name="boardNo" value="<%= boardNo %>" hidden>
+		<div>
+			댓글등록 : <input name="contents" required>
+			<input type="submit" value="등록">
+		</div>
+	</form>
 	
-	
-	
+	<br><br><br><br><br><br><br><br><br><br><br><br>
 </body>
 </html>
 <script>
