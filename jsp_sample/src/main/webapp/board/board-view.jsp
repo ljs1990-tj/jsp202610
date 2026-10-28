@@ -49,6 +49,23 @@
 		%>
 		
 	</div>
+	<hr>
+	<%
+		String commentQuery = "SELECT * FROM TBL_COMMENT WHERE BOARDNO = " + boardNo;
+		ResultSet commentRS = stmt.executeQuery(commentQuery);
+		while(commentRS.next()){
+			
+			out.println(commentRS.getString("USERID") + " : ");
+			out.println(commentRS.getString("CONTENTS"));
+			if(sessionId.equals(commentRS.getString("USERID")) || sessionRole.equals("A")){
+				out.println("<button>수정</button>");
+				out.println("<button>삭제</button>");
+			}
+			out.println("<br>");
+		}
+	%>
+	
+	
 	
 </body>
 </html>
