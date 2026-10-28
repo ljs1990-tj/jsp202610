@@ -59,7 +59,9 @@
 			out.println(commentRS.getString("CONTENTS"));
 			if(sessionId.equals(commentRS.getString("USERID")) || sessionRole.equals("A")){
 				out.println("<button>수정</button>");
-				out.println("<button>삭제</button>");
+		%>
+				<button onclick="fnCommentRemove('<%= commentRS.getString("COMMENTNO") %>')">삭제</button>
+		<%		
 			}
 			out.println("<br>");
 		}
@@ -89,6 +91,11 @@
 		
 		location.href = "board-edit.jsp?boardNo="+<%= boardNo %>;
 		
+	}
+	
+	function fnCommentRemove(commentNo){
+		
+		location.href = "comment-remove-result.jsp?commentNo="+commentNo+"&boardNo="+<%= boardNo %>;
 	}
 </script>
 

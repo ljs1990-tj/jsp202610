@@ -13,7 +13,12 @@
 		String pwd = request.getParameter("pwd");
 		String userName = request.getParameter("userName");
 	
-		String query = "INSERT INTO TBL_USER(USERID, PWD, NAME) VALUES("
+		String hobby[] = request.getParameterValues("hobby");
+		for(String name : hobby){
+			System.out.println(name);
+		}
+		
+		/* String query = "INSERT INTO TBL_USER(USERID, PWD, NAME) VALUES("
 					+ "'" + userId + "',"
 					+ "'" + pwd + "',"
 					+ "'" + userName + "')";
@@ -22,7 +27,7 @@
 			out.println("가입 성공!");
 		} else {
 			out.println("가입 실패!");
-		}
+		} */
 	%>
 </body>
 </html>
