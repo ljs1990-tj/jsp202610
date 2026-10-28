@@ -12,6 +12,10 @@
 		padding : 5px 10px;
 		text-align: center;
 	}
+	td a {
+		text-decoration: none;
+		color : black;
+	}
 </style>
 </head>
 <body>
@@ -24,7 +28,13 @@
 	
 	<%
 		ResultSet rs = null;
-		String query = "SELECT * FROM TBL_BOARD";
+		String query = "SELECT B.*, NVL(COMMENT_CNT, 0) AS COMMENT_CNT "
+			            + "FROM TBL_BOARD B "
+			            + "LEFT JOIN ( "
+			            + "    SELECT BOARDNO, COUNT(BOARDNO) AS COMMENT_CNT "
+			            + "    FROM TBL_COMMENT "
+			            + "    GROUP BY BOARDNO "
+			            + ") T ON B.BOARDNO = T.BOARDNO";
 		String sessionRole = (String) session.getAttribute("sessionRole");
 		String sessionId = (String) session.getAttribute("sessionId");
 		rs = stmt.executeQuery(query);
@@ -45,7 +55,12 @@
 		<tr>
 			<td><%= rs.getString("BOARDNO") %></td>
 			<td>
-				<a href="javascript:;" onclick="fnView(<%= rs.getString("BOARDNO") %>)"><%= rs.getString("TITLE") %></a>
+				<a href="javascript:;" onclick="fnView(<%= rs.getString("BOARDNO") %>)">
+					<%= rs.getString("TITLE") %> 
+					<% if(rs.getInt("COMMENT_CNT") != 0){
+						out.println("<span style='color:orange;'>[" + rs.getInt("COMMENT_CNT") + "]</span>");
+					} %>
+				</a>
 			</td>
 			<td><%= rs.getString("USERID") %></td>
 			<td><%= rs.getString("CNT") %></td>
